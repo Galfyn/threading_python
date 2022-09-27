@@ -1,16 +1,22 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+import time
+import threading
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+def get_data(data, value):
+    for _ in range(value):
+        print(f"[{threading.currentThread().name}] - {data} ")
+        time.sleep(1)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+thr_lst = []
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+for i in range(3):
+    thr = threading.Thread(target=get_data, args=(str(time.time()), i,), name=f"thr-{i}")
+    thr_lst.append(thr)
+    thr.start()
+
+
+for i in thr_lst:
+    i.join()
+
+print("Finish")
